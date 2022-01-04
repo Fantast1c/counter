@@ -1,22 +1,28 @@
-import React, {useState} from 'react';
 import './App.css';
+import {useDispatch, useSelector} from "react-redux";
+import {incrementAC, initialStateType, resetAC} from "./redux/countReducer";
+import {AppRootStateType} from "./redux/store";
 
-function App() {
+const App = () => {
 
-   let [state, setState] = useState(0);
 
-    const increment = ()=>{state<5 ? setState(state+1) :  setState(state) }
-    const reset = ()=>{state===5 ? setState(state=0): setState(state)}
+    const dispatch = useDispatch()
 
-    const display = {color : state===5 ? "red":"#2e2e2e"}
-    const inc ={backgroundColor : state===5 ? "#1b746c":"#26a69a"}
-    const res ={backgroundColor : state===5 ? "#26a69a":"#1b746c"}
+    const state   = useSelector<AppRootStateType, initialStateType>(state => state.count)
+
+
+    const increment = ()=>{if(state.startValue <5) {dispatch(incrementAC())}}
+    const reset = ()=>{ dispatch(resetAC())}
+
+    const display = {color : state.startValue===5 ? "red":"#2e2e2e"}
+    const inc ={backgroundColor : state.startValue===5 ? "#1b746c":"#26a69a"}
+    const res ={backgroundColor : state.startValue===5 ? "#26a69a":"#1b746c"}
 
   return (
     <div className="App">
       <div className="Container">
         <div className="Display" style={display}>
-           {state}
+           {state.startValue}
         </div>
         <div className="Container-button">
           <span><button className="Button" style={inc} onClick={increment}>inc</button></span>
@@ -25,6 +31,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
